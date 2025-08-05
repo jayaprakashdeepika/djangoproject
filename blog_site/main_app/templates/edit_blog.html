@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Blog</title>
+</head>
+<body>
+    <h2>Edit Blog Post</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label>Title:</label>
+        <input type="text" name="title" value="{{ blog.title }}" required><br><br>
+
+        <label>Content:</label><br>
+        <textarea name="content" rows="5" cols="40" required>{{ blog.content }}</textarea><br><br>
+
+        <label>Image (optional):</label><br>
+        {% if blog.image %}
+            <img src="{{ blog.image.url }}" width="200"><br>
+        {% endif %}
+        <input type="file" name="image"><br><br>
+
+        <button type="submit">Update</button>
+    </form>
+
+    <p><a href="{% url 'home' %}">Back to Home</a></p>
+</body>
+</html>
