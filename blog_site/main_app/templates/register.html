@@ -2,42 +2,90 @@
 <html>
 <head>
     <title>User Registration</title>
+    <style>
+        body {
+            background-color: #f0f8ff; /* Light blue background */
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 400px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        p {
+            text-align: center;
+        }
+        a {
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-    <centre><h2>Create a New Account</h2>
+    <div class="container">
+        <h2>Create a New Account</h2>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        <!-- User fields from RegisterForm -->
-        <label>Username:</label>
-        {{ form.username }}<br><br>
+            <label>Username:</label>
+            {{ form.username }}
 
-        <label>First Name:</label>
-        {{ form.first_name }}<br><br>
+            <label>First Name:</label>
+            {{ form.first_name }}
 
-        <label>Last Name:</label>
-        {{ form.last_name }}<br><br>
+            <label>Last Name:</label>
+            {{ form.last_name }}
 
-        <label>Email:</label>
-        {{ form.email }}<br><br>
+            <label>Email:</label>
+            {{ form.email }}
 
-        <label>Password:</label>
-        {{ form.password1 }}<br><br>
+            <label>Password:</label>
+            {{ form.password1 }}
 
-        <label>Confirm Password:</label>
-        {{ form.password2 }}<br><br>
+            <label>Confirm Password:</label>
+            {{ form.password2 }}
 
-        <!-- Extra fields from ProfileForm -->
-        <label>Contact Number:</label>
-        {{ profile_form.contact_number }}<br><br>
+            <label>Contact Number:</label>
+            {{ profile_form.contact_number }}
 
-        <label>Profile Picture (optional):</label>
-        {{ profile_form.profile_picture }}<br><br>
+            <label>Profile Picture (optional):</label>
+            {{ profile_form.profile_picture }}
 
-        <button type="submit">Register</button>
-    </form>
+            <button type="submit">Register</button>
+        </form>
 
-    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p></centre>
+        <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+    </div>
 </body>
 </html>

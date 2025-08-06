@@ -2,25 +2,75 @@
 <html>
 <head>
     <title>Create Blog Post</title>
+    <style>
+        body {
+            background-color: #fefbd8; /* Soft yellow */
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 500px;
+            margin: 50px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"],
+        textarea,
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            background-color: #ff9800;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #fb8c00;
+        }
+        p {
+            text-align: center;
+        }
+        a {
+            color: #007bff;
+        }
+    </style>
 </head>
 <body>
-    <centre><h2>Create a New Blog Post</h2>
+    <div class="container">
+        <h2>Create a New Blog Post</h2>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
 
-        <label>Title:</label>
-        <input type="text" name="title" required><br><br>
+            <label>Title:</label>
+            <input type="text" name="title" required>
 
-        <label>Content:</label><br>
-        <textarea name="content" rows="6" cols="40" required></textarea><br><br>
+            <label>Content:</label>
+            <textarea name="content" rows="6" required></textarea>
 
-        <label>Image (optional):</label><br></br>
-        <input type="file" name="image"><br><br>
+            <label>Image (optional):</label>
+            <input type="file" name="image">
 
-        <button type="submit">Post</button>
-    </form>
+            <button type="submit">Post</button>
+        </form>
 
-    <p><a href="{% url 'home' %}">Back to Home</a></p>
-</body></centre>
+        <p><a href="{% url 'home' %}">Back to Home</a></p>
+    </div>
+</body>
 </html>

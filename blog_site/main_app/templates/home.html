@@ -2,77 +2,149 @@
 <html>
 <head>
     <title>Blog Home</title>
+    <style>
+        body {
+            background-color: #e6f2ff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .top-bar {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .top-bar a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #007bff;
+        }
+        form input[type="text"] {
+            width: 60%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form button {
+            padding: 8px 15px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+        }
+        .blog-post {
+            border-top: 1px solid #ccc;
+            margin-top: 20px;
+            padding-top: 20px;
+        }
+        .blog-post img {
+            max-width: 30%;
+            height: auto;
+        }
+        .pagination {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .pagination a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #333;
+        }
+        .comment {
+            margin-left: 20px;
+            font-style: italic;
+        }
+    </style>
 </head>
-<body>
-<center>
-    <h1>Welcome to the Blog!</h1>
+<body><centre>
+    <div class="container">
+        <h1>Welcome to the Blog!</h1>
 
-    {% if user.is_authenticated %}
-        <p>
-            Hello, {{ user.username }} |
-            <a href="{% url 'create_blog' %}">Create Blog</a> |
-            <a href="{% url 'logout' %}">Logout</a>
-        </p>
+        {% if user.is_authenticated %}
+            <div class="top-bar">
+                Hello, {{ user.username }} |
+                <a href="{% url 'create_blog' %}">Create Blog</a> |
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
 
-        <!-- Search box -->
-        <form method="GET" action="{% url 'home' %}">
-            <input type="text" name="q" placeholder="Search by title" value="{{ query|default:'' }}">
-            <button type="submit">Search</button>
-        </form>
-        <hr>
-
-        <!-- Blog listing -->
-        {% for blog in page_obj %}
-            <h3>{{ blog.title }}</h3>
-
-            {% if user == blog.author %}
-                <p>
-                    <a href="{% url 'edit_blog' blog.id %}">Edit</a> |
-                    <a href="{% url 'delete_blog' blog.id %}">Delete</a>
-                </p>
-            {% endif %}
-
-            <p><strong>By:</strong> {{ blog.author.username }}</p>
-            <p><em>{{ blog.created_at }}</em></p>
-            <p>{{ blog.content }}</p>
-
-            {% if blog.image %}
-                <img src="{{ blog.image.url }}" width="300"><br>
-            {% endif %}
-
-            <h4>Comments:</h4>
-            {% for comment in blog.comments.all %}
-                <p><strong>{{ comment.author.username }}:</strong> {{ comment.text }}</p>
-            {% empty %}
-                <p>No comments yet.</p>
-            {% endfor %}
-
-            <form method="POST" action="{% url 'comment_blog' blog.id %}">
-                {% csrf_token %}
-                <textarea name="text" placeholder="Write a comment..." required></textarea><br>
-                <button type="submit">Post Comment</button>
+            <!-- Search -->
+            <form method="GET" action="{% url 'home' %}">
+                <input type="text" name="q" placeholder="Search by title" value="{{ query|default:'' }}">
+                <button type="submit">Search</button>
             </form>
 
-            <hr>
-        {% endfor %}
+            <!-- Blog Listing -->
+            {% for blog in page_obj %}
+    <div style="margin-bottom: 50px; text-align: center;">
+        <!-- Title, Author, Date (centered above the image) -->
+        <h2>{{ blog.title }}</h2>
+        <p><strong>By:</strong> {{ blog.author.username }}</p>
+        <p><em>{{ blog.created_at }}</em></p>
 
-        <!-- Pagination links -->
-        <div>
-            {% if page_obj.has_previous %}
-                <a href="?q={{ query }}&page=1">First</a>
-                <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a>
+        <!-- Image and Description Side-by-Side -->
+        <div style="display: flex; justify-content: flex-start; align-items: flex-start; gap: 70px; margin-top: 20px;margin-left:50px;">
+            {% if blog.image %}
+                <img src="{{ blog.image.url }}" width="250" style="border-radius: 8px;">
             {% endif %}
 
-            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+            <div style="text-align: left; max-width: 500px;">
+                <p>{{ blog.content }}</p>
 
-            {% if page_obj.has_next %}
-                <a href="?q={{ query }}&page={{ page_obj.next_page_number }}">Next</a>
-                <a href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">Last</a>
-            {% endif %}
+                {% if user == blog.author %}
+                    <p>
+                        <a href="{% url 'edit_blog' blog.id %}">Edit</a> |
+                        <a href="{% url 'delete_blog' blog.id %}">Delete</a>
+                    </p>
+                {% endif %}
+
+                <h4>Comments:</h4>
+                {% for comment in blog.comments.all %}
+                    <p><strong>{{ comment.author.username }}:</strong> {{ comment.text }}</p>
+                {% empty %}
+                    <p>No comments yet.</p>
+                {% endfor %}
+
+                <form method="POST" action="{% url 'comment_blog' blog.id %}">
+                    {% csrf_token %}
+                    <textarea name="text" placeholder="Write a comment..." required></textarea><br>
+                    <button type="submit">Post Comment</button>
+                </form>
+            </div>
         </div>
-    {% else %}
-        <p><a href="{% url 'login' %}">Login</a> to view blogs.</p>
-    {% endif %}
-</center>
-</body>
+        <hr>
+    </div>
+{% endfor %}
+
+
+
+
+            <!-- Pagination -->
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?q={{ query }}&page=1">First</a>
+                    <a href="?q={{ query }}&page={{ page_obj.previous_page_number }}">Previous</a>
+                {% endif %}
+
+                <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+                {% if page_obj.has_next %}
+                    <a href="?q={{ query }}&page={{ page_obj.next_page_number }}">Next</a>
+                    <a href="?q={{ query }}&page={{ page_obj.paginator.num_pages }}">Last</a>
+                {% endif %}
+            </div>
+        {% else %}
+            <p><a href="{% url 'login' %}">Login</a> to view blogs.</p>
+        {% endif %}
+    </div>
+</body></centre>
 </html>

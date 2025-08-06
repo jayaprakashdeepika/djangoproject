@@ -32,8 +32,8 @@ def register(request):
             profile = profile_form.save(commit=False)
             profile.user = user
             profile.save()
-            login(request, user)
-            return redirect('home')
+            #login(request, user)
+            return redirect('login')
     else:
         user_form = RegisterForm()
         profile_form = ProfileForm()
